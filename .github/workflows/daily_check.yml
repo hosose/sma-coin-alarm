@@ -1,0 +1,37 @@
+name: Crypto Signal Check
+
+on:
+  schedule:
+    # 매일 한국 시간 오전 9시 30분 실행 (UTC 기준 0시 30분)
+    # 주봉 마감이 보통 월요일 아침 9시이므로, 30분 뒤에 체크하면 안전합니다.
+    - cron: '30 0 * * *'
+  workflow_dispatch: # 깃허브 웹페이지에서 수동으로 실행 버튼을 누를 수 있게 함
+
+jobs:
+  run-crypto-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 저장소의 코드를 내려받음
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. 파이썬 3.9 버전 설치
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 3. 필요한 라이브러리 설치 (requirements.txt 이용)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. 파이썬 스크립트 실행 (환경변수 주입 필수)
+      - name: Run Coin Bot
+        env:
+          # 깃허브 Settings -> Secrets에 등록한 값을 가져옴
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python main.py
