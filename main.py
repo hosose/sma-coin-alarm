@@ -70,7 +70,7 @@ SMA 20: {current['SMA20']:,.2f}
         return None
 
 if __name__ == "__main__":
-    final_message = "테스트 메시지입니다. 봇이 정상 작동 중입니다." # 확인 후 지우세요
+    final_message = ""
     for ticker in TICKERS:
         try:
             msg = check_market_status(ticker)
