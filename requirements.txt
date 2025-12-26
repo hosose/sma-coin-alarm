@@ -1,5 +1,5 @@
 yfinance
-pandas
-numpy<2.0.0
 requests
-https://github.com/twopirllc/pandas-ta/archive/development.zip
+numpy<2.0.0
+pandas==2.0.3
+pandas_ta
